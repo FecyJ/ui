@@ -1,0 +1,48 @@
+### 左侧控制区域 模式切换
+- manualModeButton - 手动模式按钮
+- autoModeButton - 自动模式按钮
+- semiautoModeButton - 半自动模式按钮 位置姿态指令控制
+- xLabel - X坐标标签
+- xLineEdit - X坐标输入框
+- yLabel - Y坐标标签
+- yLineEdit - Y坐标输入框
+- zLabel - Z坐标标签
+- zLineEdit - Z坐标输入框
+- rollLabel - Roll角标签
+- rollLineEdit - Roll角输入框
+- pitchLabel - Pitch角标签
+- pitchLineEdit - Pitch角输入框
+- yawLabel - Yaw角标签
+- yawLineEdit - Yaw角输入框
+- cartesianButton - 直线运动按钮
+- ptpButton - 关节规划按钮 手柄控制
+- joystickXY - 左侧平移XY摇杆
+- joystickYawPitch - 右侧视角Yaw/Pitch摇杆
+- joystickEnableCheckBox - 激活手柄勾选框
+- zForwardButton - 前进(LT)按钮
+- zBackwardButton - 后退(RT)按钮 参数调节
+- speedLabel - 速度限制标签
+- speedSlider - 速度限制滑块
+- sensitivityLabel - 灵敏度标签
+- sensitivitySlider - 灵敏度滑块 安全设置
+- emergencyButton - 紧急停止按钮
+- collisionCheckBox - 碰撞检测勾选框 控制状态栏
+- controlStatusLabel - 手柄操作状态标签
+- systemStatusLabel - 系统状态标签
+### 右侧视觉识别区域 识别模式切换
+- nutRecognitionButton - 螺母识别按钮
+- boltRecognitionButton - 螺栓识别按钮
+- objectRecognitionButton - 通用物体识别按钮 视觉识别显示
+- visionLabel - 视觉识别显示区域 识别结果
+- recognitionResultLabel - 识别结果标签 目标选择
+- prevTargetButton - 上一个目标按钮
+- nextTargetButton - 下一个目标按钮
+- targetIndexLabel - 目标索引标签 执行对准
+- alignButton - 执行对准按钮 视觉控制
+- captureButton - 截图按钮
+- recordButton - 录制按钮
+- cameraSourceComboBox - 相机源选择下拉框
+### 其他
+- MainWindow - 主窗口
+- centralwidget - 中央部件
+- statusbar - 状态栏
