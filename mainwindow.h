@@ -19,6 +19,11 @@ public:
     ~MainWindow();
 
 private slots:
+    // 模式切换
+    void onManualModeButtonClicked();
+    void onAutoModeButtonClicked();
+    void onSemiautoModeButtonClicked();
+    
     // 位置姿态控制
     void onCartesianButtonClicked();
     void onPtpButtonClicked();
@@ -30,8 +35,24 @@ private slots:
     void onZBackwardButtonPressed();
     void onZBackwardButtonReleased();
     
+    // 参数调节
+    void onSpeedSliderValueChanged(int value);
+    void onSensitivitySliderValueChanged(int value);
+    
+    // 安全设置
+    void onEmergencyButtonClicked();
+    void onCollisionCheckBoxClicked(bool checked);
+    
     // 视觉识别
+    void onNutRecognitionButtonClicked();
+    void onBoltRecognitionButtonClicked();
+    void onObjectRecognitionButtonClicked();
+    void onPrevTargetButtonClicked();
+    void onNextTargetButtonClicked();
     void onAlignButtonClicked();
+    void onCaptureButtonClicked();
+    void onRecordButtonClicked();
+    void onCameraSourceComboBoxCurrentIndexChanged(int index);
     
     // 状态更新
     void updateStatusBar();

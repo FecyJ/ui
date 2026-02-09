@@ -22,6 +22,38 @@
        <string>控制区域</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
+       <!-- 模式切换 -->
+       <item>
+        <widget class="QGroupBox" name="modeGroupBox">
+         <property name="title">
+          <string>模式切换</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QPushButton" name="manualModeButton">
+            <property name="text">
+             <string>手动模式</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="autoModeButton">
+            <property name="text">
+             <string>自动模式</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="semiautoModeButton">
+            <property name="text">
+             <string>半自动模式</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       
        <!-- 位置姿态指令控制 -->
        <item>
         <widget class="QGroupBox" name="poseControlGroupBox">
@@ -140,9 +172,9 @@
          <property name="title">
           <string>手柄控制</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2">
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
           <!-- 左侧平移XY摇杆 -->
-          <item row="0" column="0">
+          <item>
            <widget class="QWidget" name="joystickXY">
             <property name="minimumSize">
              <size>
@@ -158,8 +190,46 @@
             </property>
            </widget>
           </item>
+          
+          <!-- 中间激活手柄和Z轴控制 -->
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <!-- 激活勾选框 -->
+            <item>
+             <widget class="QCheckBox" name="joystickEnableCheckBox">
+              <property name="text">
+               <string>激活手柄</string>
+              </property>
+             </widget>
+            </item>
+            
+            <!-- Z轴控制 -->
+            <item>
+             <widget class="QLabel" name="zLabel_2">
+              <property name="text">
+               <string>平移 Z(前后)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="zForwardButton">
+              <property name="text">
+               <string>前进 (LT)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="zBackwardButton">
+              <property name="text">
+               <string>后退 (RT)</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          
           <!-- 右侧视角Yaw/Pitch摇杆 -->
-          <item row="0" column="1">
+          <item>
            <widget class="QWidget" name="joystickYawPitch">
             <property name="minimumSize">
              <size>
@@ -175,26 +245,82 @@
             </property>
            </widget>
           </item>
-          <!-- 激活勾选框 -->
-          <item row="1" column="0" colspan="2">
-           <widget class="QCheckBox" name="joystickEnableCheckBox">
+         </layout>
+        </widget>
+       </item>
+       
+       <!-- 参数调节 -->
+       <item>
+        <widget class="QGroupBox" name="paramsGroupBox">
+         <property name="title">
+          <string>参数调节</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QLabel" name="speedLabel">
             <property name="text">
-             <string>激活手柄</string>
+             <string>速度限制:</string>
             </property>
            </widget>
           </item>
-          <!-- Z轴控制 -->
-          <item row="2" column="0">
-           <widget class="QPushButton" name="zForwardButton">
-            <property name="text">
-             <string>前进 (LT)</string>
+          <item row="0" column="1">
+           <widget class="QSlider" name="speedSlider">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="value">
+             <number>50</number>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QPushButton" name="zBackwardButton">
+          <item row="1" column="0">
+           <widget class="QLabel" name="sensitivityLabel">
             <property name="text">
-             <string>后退 (RT)</string>
+             <string>灵敏度:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSlider" name="sensitivitySlider">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="value">
+             <number>50</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       
+       <!-- 安全设置 -->
+       <item>
+        <widget class="QGroupBox" name="safetyGroupBox">
+         <property name="title">
+          <string>安全设置</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QPushButton" name="emergencyButton">
+            <property name="text">
+             <string>紧急停止</string>
+            </property>
+            <property name="styleSheet">
+             <string>background-color: red; color: white;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="collisionCheckBox">
+            <property name="text">
+             <string>碰撞检测</string>
             </property>
            </widget>
           </item>
@@ -216,6 +342,13 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QLabel" name="systemStatusLabel">
+            <property name="text">
+             <string>系统状态: 正常</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -230,6 +363,38 @@
        <string>视觉识别回传</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <!-- 识别模式切换 -->
+       <item>
+        <widget class="QGroupBox" name="recognitionModeGroupBox">
+         <property name="title">
+          <string>识别模式</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QPushButton" name="nutRecognitionButton">
+            <property name="text">
+             <string>螺母识别</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="boltRecognitionButton">
+            <property name="text">
+             <string>螺栓识别</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="objectRecognitionButton">
+            <property name="text">
+             <string>通用物体</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       
        <!-- 视觉识别显示 -->
        <item>
         <widget class="QLabel" name="visionLabel">
@@ -266,12 +431,91 @@
         </widget>
        </item>
        
+       <!-- 目标选择 -->
+       <item>
+        <widget class="QGroupBox" name="targetSelectGroupBox">
+         <property name="title">
+          <string>目标选择</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QPushButton" name="prevTargetButton">
+            <property name="text">
+             <string>上一个</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="targetIndexLabel">
+            <property name="text">
+             <string>目标 1/0</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="nextTargetButton">
+            <property name="text">
+             <string>下一个</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       
        <!-- 执行对准 -->
        <item>
         <widget class="QPushButton" name="alignButton">
          <property name="text">
           <string>执行对准</string>
          </property>
+        </widget>
+       </item>
+       
+       <!-- 视觉控制 -->
+       <item>
+        <widget class="QGroupBox" name="visionControlGroupBox">
+         <property name="title">
+          <string>视觉控制</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QPushButton" name="captureButton">
+            <property name="text">
+             <string>截图</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="recordButton">
+            <property name="text">
+             <string>录制</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="cameraSourceComboBox">
+            <item>
+             <property name="text">
+              <string>末端相机</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>全景相机</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>外部相机</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
