@@ -60,5 +60,10 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QLabel *controlStatusLabel;
+    
+    // 辅助函数
+    void applyDarkTheme();
+    void setupTooltips();
+    void setupInputValidation();
 };
 #endif // MAINWINDOW_H

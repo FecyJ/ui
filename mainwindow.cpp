@@ -3,12 +3,24 @@
 #include <QDebug>
 #include <QTimer>
 #include <QLabel>
+#include <QMessageBox>
+#include <QDoubleValidator>
+#include <QIntValidator>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    
+    // 应用深色主题样式表
+    applyDarkTheme();
+    
+    // 添加工具提示
+    setupTooltips();
+    
+    // 设置输入验证
+    setupInputValidation();
     
     // 初始化控制状态栏
     controlStatusLabel = new QLabel("手柄操作状态: 就绪");
@@ -64,14 +76,50 @@ MainWindow::~MainWindow()
 // 位置姿态控制槽函数
 void MainWindow::onCartesianButtonClicked()
 {
+    // 验证输入
+    bool ok;
+    double x = ui->xLineEdit->text().toDouble(&ok);
+    double y = ui->yLineEdit->text().toDouble(&ok);
+    double z = ui->zLineEdit->text().toDouble(&ok);
+    double roll = ui->rollLineEdit->text().toDouble(&ok);
+    double pitch = ui->pitchLineEdit->text().toDouble(&ok);
+    double yaw = ui->yawLineEdit->text().toDouble(&ok);
+    
+    if (!ok) {
+        QMessageBox::warning(this, "输入错误", "请输入有效的数值！");
+        return;
+    }
+    
     qDebug() << "直线运动 (Cartesian) 按钮点击";
+    qDebug() << "目标位置: (" << x << "," << y << "," << z << ")";
+    qDebug() << "目标姿态: (" << roll << "," << pitch << "," << yaw << ")";
+    
     ui->statusbar->showMessage("执行笛卡尔直线路径规划...", 2000);
+    ui->recognitionResultLabel->setText(QString("正在移动到 (%1, %2, %3)...").arg(x).arg(y).arg(z));
 }
 
 void MainWindow::onPtpButtonClicked()
 {
+    // 验证输入
+    bool ok;
+    double x = ui->xLineEdit->text().toDouble(&ok);
+    double y = ui->yLineEdit->text().toDouble(&ok);
+    double z = ui->zLineEdit->text().toDouble(&ok);
+    double roll = ui->rollLineEdit->text().toDouble(&ok);
+    double pitch = ui->pitchLineEdit->text().toDouble(&ok);
+    double yaw = ui->yawLineEdit->text().toDouble(&ok);
+    
+    if (!ok) {
+        QMessageBox::warning(this, "输入错误", "请输入有效的数值！");
+        return;
+    }
+    
     qDebug() << "关节规划 (PTP) 按钮点击";
+    qDebug() << "目标位置: (" << x << "," << y << "," << z << ")";
+    qDebug() << "目标姿态: (" << roll << "," << pitch << "," << yaw << ")";
+    
     ui->statusbar->showMessage("执行关节空间路径规划...", 2000);
+    ui->recognitionResultLabel->setText(QString("正在PTP移动到 (%1, %2, %3)...").arg(x).arg(y).arg(z));
 }
 
 // 手柄控制槽函数
@@ -110,8 +158,23 @@ void MainWindow::onZBackwardButtonReleased()
 void MainWindow::onAlignButtonClicked()
 {
     qDebug() << "执行对准按钮点击";
-    ui->statusbar->showMessage("正在执行视觉对准...", 2000);
-    ui->recognitionResultLabel->setText("正在执行对准...");
+    ui->statusbar->showMessage("正在执行视觉对准...", 3000);
+    
+    // 模拟对准过程
+    ui->recognitionResultLabel->setText("正在计算目标位置...");
+    
+    QTimer::singleShot(1000, [this]() {
+        ui->recognitionResultLabel->setText("正在规划运动路径...");
+    });
+    
+    QTimer::singleShot(2000, [this]() {
+        ui->recognitionResultLabel->setText("正在移动到目标位置...");
+    });
+    
+    QTimer::singleShot(3000, [this]() {
+        ui->recognitionResultLabel->setText("✓ 对准完成！可以开始操作");
+        ui->statusbar->showMessage("视觉对准完成", 2000);
+    });
 }
 
 // 模式切换槽函数
@@ -152,10 +215,24 @@ void MainWindow::onSensitivitySliderValueChanged(int value)
 // 安全设置槽函数
 void MainWindow::onEmergencyButtonClicked()
 {
-    qDebug() << "紧急停止按钮点击";
-    ui->statusbar->showMessage("紧急停止激活", 2000);
-    ui->controlStatusLabel->setText("手柄操作状态: 紧急停止");
-    ui->systemStatusLabel->setText("系统状态: 紧急停止");
+    // 紧急停止确认对话框
+    QMessageBox::StandardButton reply = QMessageBox::question(
+        this,
+        "紧急停止确认",
+        "您确定要执行紧急停止吗？\n\n这将立即停止所有机械臂运动！",
+        QMessageBox::Yes | QMessageBox::No,
+        QMessageBox::No
+    );
+    
+    if (reply == QMessageBox::Yes) {
+        qDebug() << "紧急停止按钮点击";
+        ui->statusbar->showMessage("紧急停止已激活", 5000);
+        ui->controlStatusLabel->setText("手柄操作状态: 紧急停止");
+        ui->systemStatusLabel->setText("系统状态: 紧急停止");
+        
+        // 禁用手柄控制
+        ui->joystickEnableCheckBox->setChecked(false);
+    }
 }
 
 void MainWindow::onCollisionCheckBoxClicked(bool checked)
@@ -232,4 +309,257 @@ void MainWindow::updateStatusBar()
         statusIndex = (statusIndex + 1) % 4;
         ui->controlStatusLabel->setText(QString("手柄操作状态: %1").arg(statuses[statusIndex]));
     }
+}
+
+// 应用深色主题样式表
+void MainWindow::applyDarkTheme()
+{
+    QString styleSheet = R"(
+        QMainWindow {
+            background-color: #1E1E1E;
+        }
+        
+        QWidget {
+            background-color: #1E1E1E;
+            color: #E0E0E0;
+            font-family: "Microsoft YaHei", "SimHei", Arial;
+            font-size: 10pt;
+        }
+        
+        QGroupBox {
+            background-color: #2D2D2D;
+            border: 2px solid #3D3D3D;
+            border-radius: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            font-weight: bold;
+        }
+        
+        QGroupBox::title {
+            subcontrol-origin: margin;
+            subcontrol-position: top left;
+            left: 12px;
+            padding: 0 8px;
+            color: #4FC3F7;
+        }
+        
+        QPushButton {
+            background-color: #3D3D3D;
+            border: 1px solid #555555;
+            border-radius: 6px;
+            padding: 8px 16px;
+            min-height: 32px;
+            font-weight: bold;
+        }
+        
+        QPushButton:hover {
+            background-color: #4D4D4D;
+            border: 1px solid #007ACC;
+        }
+        
+        QPushButton:pressed {
+            background-color: #2D2D2D;
+        }
+        
+        QPushButton:checked {
+            background-color: #007ACC;
+            border: 1px solid #0099FF;
+        }
+        
+        QLineEdit {
+            background-color: #252525;
+            border: 1px solid #555555;
+            border-radius: 4px;
+            padding: 6px;
+            min-height: 24px;
+        }
+        
+        QLineEdit:focus {
+            border: 2px solid #007ACC;
+            background-color: #2D2D2D;
+        }
+        
+        QLabel {
+            color: #E0E0E0;
+        }
+        
+        QSlider::groove:horizontal {
+            height: 8px;
+            background: #3D3D3D;
+            border-radius: 4px;
+        }
+        
+        QSlider::handle:horizontal {
+            background: #007ACC;
+            width: 18px;
+            margin: -5px 0;
+            border-radius: 9px;
+        }
+        
+        QSlider::handle:horizontal:hover {
+            background: #0099FF;
+        }
+        
+        QCheckBox {
+            spacing: 8px;
+        }
+        
+        QCheckBox::indicator {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #555555;
+            border-radius: 4px;
+            background-color: #252525;
+        }
+        
+        QCheckBox::indicator:checked {
+            background-color: #007ACC;
+            border-color: #007ACC;
+            image: url(:/icons/check.png);
+        }
+        
+        QCheckBox::indicator:hover {
+            border-color: #007ACC;
+        }
+        
+        QComboBox {
+            background-color: #252525;
+            border: 1px solid #555555;
+            border-radius: 4px;
+            padding: 6px;
+            min-height: 24px;
+        }
+        
+        QComboBox:hover {
+            border: 1px solid #007ACC;
+        }
+        
+        QComboBox::drop-down {
+            border: none;
+            width: 24px;
+        }
+        
+        QComboBox QAbstractItemView {
+            background-color: #2D2D2D;
+            border: 1px solid #555555;
+            selection-background-color: #007ACC;
+        }
+        
+        QStatusBar {
+            background-color: #252525;
+            border-top: 1px solid #3D3D3D;
+        }
+        
+        QMenuBar {
+            background-color: #2D2D2D;
+            border-bottom: 1px solid #3D3D3D;
+        }
+        
+        QMenuBar::item {
+            background-color: transparent;
+            padding: 8px 12px;
+        }
+        
+        QMenuBar::item:selected {
+            background-color: #007ACC;
+        }
+        
+        /* 紧急停止按钮特殊样式 */
+        QPushButton#emergencyButton {
+            background-color: #FF4444;
+            color: white;
+            border: 2px solid #FF6666;
+            font-size: 12pt;
+            font-weight: bold;
+        }
+        
+        QPushButton#emergencyButton:hover {
+            background-color: #FF6666;
+            border: 2px solid #FF8888;
+        }
+        
+        QPushButton#emergencyButton:pressed {
+            background-color: #CC0000;
+        }
+        
+        /* 视觉识别显示区域 */
+        QLabel#visionLabel {
+            background-color: #000000;
+            border: 2px solid #3D3D3D;
+            border-radius: 4px;
+            color: #888888;
+        }
+        
+        /* 手柄摇杆区域 */
+        QWidget#joystickXY, QWidget#joystickYawPitch {
+            background-color: #252525;
+            border: 2px solid #3D3D3D;
+            border-radius: 8px;
+        }
+    )";
+    
+    this->setStyleSheet(styleSheet);
+}
+
+// 设置工具提示
+void MainWindow::setupTooltips()
+{
+    // 模式切换
+    ui->manualModeButton->setToolTip("手动模式：完全由操作员控制机械臂运动");
+    ui->autoModeButton->setToolTip("自动模式：机械臂按照预设程序自动执行任务");
+    ui->semiautoModeButton->setToolTip("半自动模式：操作员与自动系统协同控制");
+    
+    // 位置姿态控制
+    ui->xLineEdit->setToolTip("末端执行器X坐标（单位：毫米）");
+    ui->yLineEdit->setToolTip("末端执行器Y坐标（单位：毫米）");
+    ui->zLineEdit->setToolTip("末端执行器Z坐标（单位：毫米）");
+    ui->rollLineEdit->setToolTip("末端执行器Roll角（单位：度）");
+    ui->pitchLineEdit->setToolTip("末端执行器Pitch角（单位：度）");
+    ui->yawLineEdit->setToolTip("末端执行器Yaw角（单位：度）");
+    ui->cartesianButton->setToolTip("笛卡尔直线路径规划：末端执行器沿直线路径运动");
+    ui->ptpButton->setToolTip("关节空间路径规划：各关节独立运动到目标位置");
+    
+    // 手柄控制
+    ui->joystickEnableCheckBox->setToolTip("勾选后激活手柄控制，防止误触");
+    ui->zForwardButton->setToolTip("Z轴前进（对应手柄LT扳机）");
+    ui->zBackwardButton->setToolTip("Z轴后退（对应手柄RT扳机）");
+    
+    // 参数调节
+    ui->speedSlider->setToolTip("调整机械臂运动速度限制（0-100%）");
+    ui->sensitivitySlider->setToolTip("调整手柄控制灵敏度（0-100%）");
+    
+    // 安全设置
+    ui->emergencyButton->setToolTip("紧急停止：立即停止所有运动（危险操作）");
+    ui->collisionCheckBox->setToolTip("启用碰撞检测，防止机械臂与环境碰撞");
+    
+    // 视觉识别
+    ui->nutRecognitionButton->setToolTip("切换到螺母识别模式");
+    ui->boltRecognitionButton->setToolTip("切换到螺栓识别模式");
+    ui->objectRecognitionButton->setToolTip("切换到通用物体识别模式");
+    ui->prevTargetButton->setToolTip("选择上一个识别到的目标");
+    ui->nextTargetButton->setToolTip("选择下一个识别到的目标");
+    ui->alignButton->setToolTip("执行视觉对准，自动移动到目标位置");
+    ui->captureButton->setToolTip("保存当前视觉画面截图");
+    ui->recordButton->setToolTip("开始/停止视频录制");
+    ui->cameraSourceComboBox->setToolTip("选择相机源：末端相机/全景相机/外部相机");
+}
+
+// 设置输入验证
+void MainWindow::setupInputValidation()
+{
+    // 设置位置输入范围（-1000mm 到 1000mm）
+    QDoubleValidator *posValidator = new QDoubleValidator(-1000.0, 1000.0, 2, this);
+    posValidator->setNotation(QDoubleValidator::StandardNotation);
+    
+    ui->xLineEdit->setValidator(posValidator);
+    ui->yLineEdit->setValidator(posValidator);
+    ui->zLineEdit->setValidator(posValidator);
+    
+    // 设置角度输入范围（-180度 到 180度）
+    QDoubleValidator *angleValidator = new QDoubleValidator(-180.0, 180.0, 2, this);
+    angleValidator->setNotation(QDoubleValidator::StandardNotation);
+    
+    ui->rollLineEdit->setValidator(angleValidator);
+    ui->pitchLineEdit->setValidator(angleValidator);
+    ui->yawLineEdit->setValidator(angleValidator);
 }
