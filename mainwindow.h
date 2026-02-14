@@ -59,6 +59,9 @@ private slots:
     // 状态更新
     void updateStatusBar();
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 private:
     Ui::MainWindow *ui;
     QLabel *controlStatusLabel;
