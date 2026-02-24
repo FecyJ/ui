@@ -37,17 +37,17 @@
        <string>控制区域</string>
       </property>
       <property name="minimumSize">
-       <size>
-        <width>420</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>480</width>
-        <height>16777215</height>
-       </size>
-      </property>
+      <size>
+       <width>480</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>540</width>
+       <height>16777215</height>
+      </size>
+     </property>
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
         <horstretch>0</horstretch>
@@ -493,7 +493,7 @@
        <item>
         <widget class="QLabel" name="visionLabel">
          <property name="pixmap">
-          <pixmap>:/sample.png</pixmap>
+          <pixmap>:/sample2.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>false</bool>
@@ -503,7 +503,7 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>800</width>
+           <width>500</width>
            <height>450</height>
           </size>
          </property>
@@ -650,11 +650,11 @@
        </size>
       </property>
       <property name="maximumSize">
-       <size>
-        <width>220</width>
-        <height>16777215</height>
-       </size>
-      </property>
+      <size>
+       <width>280</width>
+       <height>16777215</height>
+      </size>
+     </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <property name="spacing">
         <number>10</number>

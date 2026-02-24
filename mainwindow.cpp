@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     
     // 设置视觉识别显示区域的图片
-    QPixmap pixmap(":/sample.png");
+    QPixmap pixmap(":/sample2.png");
     if (!pixmap.isNull()) {
         // 按比例缩放图片以适应label，保持原始比例，确保整个图片都能显示
         // 使用高质量抗锯齿缩放
@@ -96,7 +96,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     QMainWindow::resizeEvent(event);
     
     // 重新调整视觉识别显示区域的图片大小
-    QPixmap pixmap(":/sample.png");
+    QPixmap pixmap(":/sample2.png");
     if (!pixmap.isNull()) {
         // 使用高质量抗锯齿缩放
         QPixmap scaledPixmap = pixmap.scaled(
