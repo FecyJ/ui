@@ -110,7 +110,7 @@
 // 更新视觉识别结果文本框
 {
   "type": "status",
-  "target": "VISION_STATUS",
+  "target": "PLAN_STATUS",
   "msg": "正在移动到 (120, 30, 45)...",
   "code": 0
 }

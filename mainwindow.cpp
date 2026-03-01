@@ -95,8 +95,8 @@ MainWindow::MainWindow(QWidget *parent)
 
             // 路由到具体的 QLabel
             
-            if (target == "VISION_STATUS") {   // 更新视觉识别结果文本框
-                targetLabel = ui->recognitionResultLabel;
+            if (target == "PLAN_STATUS") {   // 更新运动规划文本框
+                targetLabel = ui->operationResultLabel;
             } else if (target == "SYSTEM_STATUS") {   // 更新左下角系统状态
                 targetLabel = ui->systemStatusLabel;
             } else if (target == "JOY_STATUS") {   // 更新手柄操作状态

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QLabel>
+#include <QPushButton>
 #include "RosWorker.h"
 
 QT_BEGIN_NAMESPACE
